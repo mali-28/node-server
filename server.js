@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express()
 const port = 5000
 const user = require("./routes/user")
+const board = require("./routes/board")
 
 app.use(express.json());
 app.use(
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/user", user);
+app.use("/board", board);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

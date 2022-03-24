@@ -3,7 +3,7 @@ const router = express.Router();
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 const uniqid = require("uniqid")
-
+const verifyToken = require("../auth/verify_token")
 let users = [];
 
 router.post("/create", (req, res) => {
@@ -31,7 +31,6 @@ router.post("/create", (req, res) => {
 
     const copyUser = { ...createUser }
     delete copyUser.password
-    console.log({ copyUser })
 
     jwt.sign(
       { user: copyUser },
@@ -85,7 +84,8 @@ router.post("/login", (req, res) => {
 })
 
 
-router.get('/all', function (req, res) {
+router.get('/all', verifyToken,function (req, res) {
+
   res.status(200).send(users)
 })
 module.exports = router;

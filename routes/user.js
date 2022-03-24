@@ -56,11 +56,11 @@ router.post("/create", (req, res) => {
 })
 
 router.post("/login", (req, res) => {
-  const username = req.body.username;
+  const email = req.body.email;
   const password = md5(req.body.password);
 
   const isUserFound = users.find((user) => {
-    return user.username === username && user.password === password
+    return user.email === email && user.password === password
   })
 
   if (isUserFound) {
@@ -80,32 +80,10 @@ router.post("/login", (req, res) => {
         }
       })
   } else {
-    res.status(404).json({ message: "Invalid username or password" })
+    res.status(404).json({ message: "Invalid email or password" })
   }
 })
 
-
-router.put("/status", (req, res) => {
-  const id = req.body.userId;
-  try {
-    if(id && users){
-      users = users.map((user) => {
-        if (user.userId === id) {
-          const activeUser = { ...user, isAdmin: !user.isAdmin }
-          res.contentType("application/json")
-          res.status(200).json(activeUser)
-          return activeUser
-        }
-        return user;
-      })
-    }else{
-      res.status(400).json({message : "something went wrong"})
-    }
-  }
-  catch (e) {
-    res.status(400).json({ status: 400, message: e })
-  }
-})
 
 router.get('/all', function (req, res) {
   res.status(200).send(users)
